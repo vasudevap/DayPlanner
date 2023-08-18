@@ -132,7 +132,11 @@ $(function () {
 
   }, 1000);
 
+  
 
-
+  // for (var i=9; i<18; i++){
+  //   var j= "hour-"+String(i).toString;
+  //   console.log("adding"+getTaskFromStorage(i).taskText);
+  // }
 
 });
