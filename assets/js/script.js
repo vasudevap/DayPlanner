@@ -36,13 +36,26 @@ $(function () {
         var taskText = timeBlockEl.children[1].value;
         console.log(taskText);
 
-        var taskLine = {
-          hour: hour,
-          taskText: taskText,
-        };
-        console.log("taslines with "+taskLine.taskText);
+        var foundTaskLine = getTaskFromStorage(hour);
+
+        if(!foundTaskLine) {
+
+          console.log("found taskline in storage!");
+
+        } else {
+        
+          var taskLine = {
+            hour: hour,
+            taskText: taskText,
+          };
+          localStorage.setItem("taskLines", JSON.stringify(taskLine));
+
+          
+        }
+
+        
+        // console.log("tasklines with "+taskLine.taskText);
         // var findtas
-        localStorage.setItem("taskLines", JSON.stringify(taskLine));
       }
 
     } else {
@@ -52,12 +65,7 @@ $(function () {
 
     
 
-    // function getTaskFromStorage(hour){
-
-    //   var tasklines = localStorage.getItem("taskLines");
-    //   // use tasklines array to find hour
-    // }
-
+    
     // function renderTasks() {
 
     //   for(i=9; i<17; i++) {
@@ -81,6 +89,20 @@ $(function () {
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
+  function getTaskFromStorage(hour){
+
+    var tasklines = localStorage.getItem("taskLines");
+    // use tasklines array to find hour
+    if (tasklines) {
+      var i =0;
+      while((tasklines[i].hour<=hour) && (tasklines.length>i)){
+        i++;
+      }
+      console.log(tasklines[i].hour+" "+tasklines[i].taskText);
+      return tasklines[i];
+    }
+    return null;
+  }
 
   //
   // TODO: Add code to display the current date in the header of the page.
