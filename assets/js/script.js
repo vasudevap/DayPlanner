@@ -18,23 +18,26 @@ $(function () {
     // console.log(event.currentTarget);
 
     var timeBlockEl = event.currentTarget;
-    var hour = Number(timeBlockEl.getAttribute("id").at(5));
+    if (ttimeBlockEl.children[1].value.trim.length != 0){
+      var hour = Number(timeBlockEl.getAttribute("id").at(5));
 
-    if (hour!=9) {
-      hour = Number(hour)*10+Number(timeBlockEl.getAttribute("id").at(6));
-      console.log(hour);
+      if (hour!=9) {
+        hour = Number(hour)*10+Number(timeBlockEl.getAttribute("id").at(6));
+        console.log(hour);
+      }
+  
+      var taskText = timeBlockEl.children[1].value;
+      console.log(taskText);
+  
+      var taskLine = {
+        hour: hour,
+        taskText: taskText,
+      };
+  
+      localStorage.setItem("taskLines", JSON.stringify(taskLine));
     }
-
-    var taskText = timeBlockEl.children[1].value;
-    console.log(taskText);
-
-    var taskLine = {
-      hour: hour,
-      taskText: taskText,
-    };
-
-    localStorage.setItem("taskLines", JSON.stringify(taskLine));
     
+
     // Number(hour.at(6));
     // $("hou-11").children[1].value;
   });
