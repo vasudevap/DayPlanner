@@ -11,35 +11,61 @@ $(function () {
   // useful when saving the description in local storage?
   //
 
-  $(".time-block").on( "click", function(event) {
-    
+  $(".time-block").on("click", function (event) {
+
     event.preventDefault();
-    // console.log(event.target);
-    // console.log(event.currentTarget);
 
-    var timeBlockEl = event.currentTarget;
-    if (ttimeBlockEl.children[1].value.trim.length != 0){
-      var hour = Number(timeBlockEl.getAttribute("id").at(5));
+    var eventElName = event.target.nodeName;
+    if ((eventElName == "I") || (eventElName == "BUTTON")) {
+      
+      console.log(eventElName);
 
-      if (hour!=9) {
-        hour = Number(hour)*10+Number(timeBlockEl.getAttribute("id").at(6));
-        console.log(hour);
+      var timeBlockEl = event.currentTarget;
+      // console.log(timeBlockEl.children[1].value.trim()+ " 2");
+
+      if (timeBlockEl.children[1].value.trim.length != 0) {
+        console.log(eventElName+ "2");
+
+        var hour = Number(timeBlockEl.getAttribute("id").at(5));
+
+        if (hour != 9) {
+          hour = Number(hour) * 10 + Number(timeBlockEl.getAttribute("id").at(6));
+          console.log(hour);
+        }
+
+        var taskText = timeBlockEl.children[1].value;
+        console.log(taskText);
+
+        var taskLine = {
+          hour: hour,
+          taskText: taskText,
+        };
+        console.log("taslines with "+taskLine.taskText);
+        // var findtas
+        localStorage.setItem("taskLines", JSON.stringify(taskLine));
       }
-  
-      var taskText = timeBlockEl.children[1].value;
-      console.log(taskText);
-  
-      var taskLine = {
-        hour: hour,
-        taskText: taskText,
-      };
-  
-      localStorage.setItem("taskLines", JSON.stringify(taskLine));
+
+    } else {
+      console.log("notI or button");
+
     }
+
     
 
-    // Number(hour.at(6));
-    // $("hou-11").children[1].value;
+    // function getTaskFromStorage(hour){
+
+    //   var tasklines = localStorage.getItem("taskLines");
+    //   // use tasklines array to find hour
+    // }
+
+    // function renderTasks() {
+
+    //   for(i=9; i<17; i++) {
+    //     var taskline = getTaskFromStorage(i);
+    //   }
+    // }
+
+
   });
 
   //
