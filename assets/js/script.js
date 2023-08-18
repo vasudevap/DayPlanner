@@ -23,7 +23,7 @@ $(function () {
       var timeBlockEl = event.currentTarget;
       // console.log(timeBlockEl.children[1].value.trim()+ " 2");
 
-      if (timeBlockEl.children[1].value.trim.length != 0) {
+      if (timeBlockEl.children[1].value.trim().length != 0) {
         console.log(eventElName+ "2");
 
         var hour = Number(timeBlockEl.getAttribute("id").at(5));
