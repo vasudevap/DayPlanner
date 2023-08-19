@@ -36,7 +36,7 @@ THEN the saved events persist
 
 The following animation demonstrates the application functionality:
 
-<!-- @TODO: create ticket to review/update image) -->
+![Demo gif of appication working](Work-Day-Scheduler.gif)
 
 ## Locations and Links
 
@@ -46,9 +46,5 @@ The following animation demonstrates the application functionality:
 ### GitHub Repository
 * https://github.com/vasudevap/DayPlanner.git
 
-## Known Issues
-
-### Formatting
-Does not format past, present, future.
 
 © 2023 Prashant Vasudeva. Please use and distribute at will.
