@@ -15,57 +15,34 @@ $(function () {
 
     event.preventDefault();
 
+    // since time-block is the textarea and numbering
+    // and the button, we want to 
+    // check if the button was clicked
     var eventElName = event.target.nodeName;
     if ((eventElName == "I") || (eventElName == "BUTTON")) {
-      
-      console.log(eventElName);
+      // button was clicked
 
       var timeBlockEl = event.currentTarget;
-      // console.log(timeBlockEl.children[1].value.trim()+ " 2");
 
-      if (timeBlockEl.children[1].value.trim().length != 0) {
-        console.log(eventElName+ "2");
-
-        var hour = Number(timeBlockEl.getAttribute("id").at(5));
-
-        if (hour != 9) {
-          hour = Number(hour) * 10 + Number(timeBlockEl.getAttribute("id").at(6));
-          console.log(hour);
-        }
-
-        var taskText = timeBlockEl.children[1].value;
-        console.log(taskText);
-
-        var foundTaskLine = getTaskFromStorage(hour);
-
-        if(!foundTaskLine) {
-
-          console.log("found taskline in storage!");
-
-        } else {
-        
-          var taskLine = {
-            hour: hour,
-            taskText: taskText,
-          };
-          localStorage.setItem("taskLines", JSON.stringify(taskLine));
-
-          
-        }
-
-        
-        // console.log("tasklines with "+taskLine.taskText);
-        // var findtas
+      // find what hour the timeblock is for
+      // get the left digit
+      var hour = Number(timeBlockEl.getAttribute("id").at(5));
+      if (hour != 9) {
+        // get the right digit since hour is double digits
+        hour = Number(hour) * 10 + Number(timeBlockEl.getAttribute("id").at(6));
       }
 
-    } else {
-      console.log("notI or button");
+      // remove any existing entry for this time-block
+      removeTaskFromStorage(hour);
+
+      // add an updated new entry for this time-block
+      storeTaskInStorage(hour, timeBlockEl.children[1].value);
 
     }
 
-    
 
-    
+
+
     // function renderTasks() {
 
     //   for(i=9; i<17; i++) {
@@ -89,25 +66,103 @@ $(function () {
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
-  function getTaskFromStorage(hour){
+  // return 'taskText' for the hour if exists
+  // else, return ""
+  function getTaskFromStorage(hour) {
 
-    var tasklines = localStorage.getItem("taskLines");
+    var taskLines = localStorage.getItem("taskLines");
     // use tasklines array to find hour
-    if (tasklines) {
-      var i =0;
-      while((tasklines[i].hour<=hour) && (tasklines.length>i)){
-        i++;
+    if (taskLines) {
+      var i = 0;
+      taskLines = JSON.parse(taskLines);
+    
+      for (var i = 0; i < taskLines.length; i++) {
+        if (taskLines[i].hour == hour) {
+          return taskLines[i].taskText;
+        }
       }
-      console.log(tasklines[i].hour+" "+tasklines[i].taskText);
-      return tasklines[i];
     }
-    return null;
+
+    return "";
   }
 
+  //
+  // this funtion retrieves the task lines in storage and
+  // if the hour is found it replaces the text to taskText
+  // else it creates a new entry and stores it
+  //
+  function storeTaskInStorage(hour, taskText) {
+
+    var taskLines = localStorage.getItem("taskLines");
+    var newTaskLine = {
+      hour: hour,
+      taskText: taskText
+    };
+
+    if (taskLines) {
+
+      taskLines = JSON.parse(taskLines);
+      taskLines.push(newTaskLine);
+      taskLines = JSON.stringify(taskLines);
+
+      localStorage.setItem("taskLines", taskLines);
+
+    } else {
+
+      localStorage.setItem("taskLines", JSON.parse(newTaskLine));
+    }
+  }
+
+  //
+  // the given hour is removed from the storage list if it exists
+  //
+  function removeTaskFromStorage(hour) {
+
+    var taskLines = localStorage.getItem("taskLines");
+    if (taskLines) {
+
+      var i = 0;
+      taskLines = JSON.parse(taskLines);
+
+      while (i < taskLines.length) {
+
+        var taskLine = taskLines[i];
+        if (taskLine.hour = hour) {
+
+          // this is the entry to remove
+          taskLines.toSpliced(i, 1);
+
+        }
+      }
+    }
+  }
   //
   // TODO: Add code to display the current date in the header of the page.
   //
   setInterval(function () {
+
+    // var hour = 9;
+
+
+    // for (var i=0; i<8; i++){
+
+    //   var divId = "hour-"+(i+hour);
+    //   var timeBlockEl = document.querySelector(divId);
+
+    //   var taskText = getTaskFromStorage(i+hour);
+
+    //   timeBlockEl.children[1].textContent = taskText;
+
+    var timeBlockEl = document.getElementById("hour-9");
+    console.log(timeBlockEl.children[1]);
+
+    // timeBlockEl.children[1].value = "rama lama ding dong"
+    // .children[1].textContent = "manual input";
+
+    var taskText = getTaskFromStorage(i + hour);
+
+
+    // }
 
     var today = dayjs();
     switch (dayjs().date()) {
@@ -130,9 +185,11 @@ $(function () {
         $('#currentDay').text(today.format('dddd, MMMM D[th], YYYY'));
     }
 
+
+
   }, 1000);
 
-  
+
 
   // for (var i=9; i<18; i++){
   //   var j= "hour-"+String(i).toString;
