@@ -38,7 +38,6 @@ $(function () {
       // removeTaskFromStorage(hour);
 
       // add an updated new entry for this time-block
-      console.log(hour+" - "+timeBlockEl.children[1].value);
       storeTaskInStorage(hour, timeBlockEl.children[1].value);
 
     }
@@ -79,10 +78,8 @@ $(function () {
       var i = 0;
       taskLines = JSON.parse(taskLines);
       // console.log(taskLines.hour+"-"+taskLines.taskText);
-      console.log(taskLines);
       for (var i = 0; i < taskLines.length; i++) {
         if (taskLines[i].hour == hour) {
-          console.log(taskLines.hour+"-"+taskLines.taskText);
           return taskLines[i].taskText;
         }
       }
@@ -98,25 +95,39 @@ $(function () {
   //
   function storeTaskInStorage(hour, taskText) {
 
-    console.log(hour+ " and "+taskText+" received!");
     var taskLines = localStorage.getItem("taskLines");
-    var newTaskLine = {
-      hour: hour,
-      taskText: taskText
-    };
 
     if (taskLines) {
 
-      console.log("here now");
       taskLines = JSON.parse(taskLines);
-      taskLines.push(newTaskLine);
-      taskLines = JSON.stringify(taskLines);
 
-      localStorage.setItem("taskLines", taskLines);
+      for (var i = 0; i < taskLines.length; i++) {
+        if (taskLines[i].hour == hour) {
+          taskLines[i].taskText = taskText;
+          localStorage.setItem("taskLines", JSON.stringify(taskLines));
+          return;
+        }
+      }
+
+      var newTaskLine = {
+        hour: hour,
+        taskText: taskText
+      };
+
+      taskLines.push(newTaskLine);
+      localStorage.setItem("taskLines", JSON.stringify(taskLines));
+
 
     } else {
+
+      var newTaskLine = {
+        hour: hour,
+        taskText: taskText
+      };
+
       var taskLines = [newTaskLine];
       localStorage.setItem("taskLines", JSON.stringify(taskLines));
+
     }
   }
 
@@ -150,11 +161,11 @@ $(function () {
 
   }
   setInterval(function () {
-    
+
     if (mainCounter) {
-      
-      for (var i=9; i<18; i++){
-          
+
+      for (var i = 9; i < 18; i++) {
+
         var divId = "hour-" + (i);
         var timeBlockEl = document.getElementById(divId);
 
@@ -169,8 +180,6 @@ $(function () {
 
         // var taskText = getTaskFromStorage(i + hour);
         timeBlockEl.children[1].value = taskText;
-        console.log(i+" "+taskText);
-
       }
 
       mainCounter = false;
